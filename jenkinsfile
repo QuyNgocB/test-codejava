@@ -11,7 +11,7 @@ pipeline {
         stage('Run') {
             steps {
                 // Bước 2: Chạy chương trình Java từ tệp .class
-                sh 'java -cp output Hello Quy dz'
+                sh 'java -cp output HelloWorld'
             }
         }
     }
