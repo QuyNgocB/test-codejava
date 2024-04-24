@@ -1,17 +1,35 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            label 'my-kubernetes-agent' // Thay 'my-kubernetes-agent' bằng label Kubernetes của bạn
+        }
+    }
     
     stages {
-        stage('Build') {
+        stage('Clone repository') {
             steps {
-                // Bước 1: Biên dịch chương trình Java và di chuyển tệp .class vào thư mục output
-                sh 'javac -d output HelloWorld.java'
+                // Bước checkout mã nguồn từ repository
+                git 'https://github.com/QuyNgocB/test-codejava.git'
             }
         }
-        stage('Run') {
+        
+        stage('Build and push Docker image') {
             steps {
-                // Bước 2: Chạy chương trình Java từ tệp .class
-                sh 'java -cp output HelloWorld'
+                // Bước biên dịch mã nguồn và đẩy hình ảnh Docker lên Docker Hub
+                script {
+                    sh 'docker build -t bnquy/ngocquy123:latest .'
+                    sh 'docker push bnquy/ngocquy123:latest'
+                }
+            }
+        }
+        
+        stage('Deploy to Kubernetes') {
+            steps {
+                // Triển khai ứng dụng lên Kubernetes
+                kubernetesDeploy(
+                    configs: 'kubernetes/deployment.yaml',
+                    kubeconfigId: 'my-kubeconfig'
+                )
             }
         }
     }
