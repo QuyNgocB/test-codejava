@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'my-kubernetes-agent' // Thay 'my-kubernetes-agent' bằng label Kubernetes của bạn
+            label 'kubernetes' // Thay 'my-kubernetes-agent' bằng label Kubernetes của bạn
         }
     }
     
