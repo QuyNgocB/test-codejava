@@ -20,4 +20,5 @@ spec:
       containers:
       - name: myapp
         image: bnquy/ngocquy123:latest
+        - containerPort: 8080
 
